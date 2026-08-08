@@ -1,1 +1,1271 @@
 
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport"
+content="width=device-width, initial-scale=1.0">
+
+<title>Crear Video - VIORA AI</title>
+
+<link rel="stylesheet"
+href="../style.css">
+
+<style>
+
+*{
+box-sizing:border-box;
+}
+
+body{
+
+margin:0;
+
+font-family:Arial,sans-serif;
+
+background:#0b0b12;
+
+color:white;
+
+}
+
+.app{
+
+width:100%;
+
+max-width:900px;
+
+margin:auto;
+
+padding:20px;
+
+}
+
+h1{
+
+text-align:center;
+
+font-size:32px;
+
+margin-bottom:8px;
+
+}
+
+.subtitulo{
+
+text-align:center;
+
+color:#aaa;
+
+margin-bottom:25px;
+
+}
+
+.card{
+
+background:#151521;
+
+border:1px solid #29293a;
+
+border-radius:18px;
+
+padding:20px;
+
+margin-bottom:18px;
+
+box-shadow:
+0 8px 25px rgba(0,0,0,.25);
+
+}
+
+.via-card{
+
+text-align:center;
+
+}
+
+.via-avatar{
+
+font-size:55px;
+
+margin-bottom:8px;
+
+}
+
+.via-card h2{
+
+margin:5px 0;
+
+}
+
+.via-card p{
+
+color:#aaa;
+
+}
+
+button{
+
+border:none;
+
+border-radius:12px;
+
+padding:14px 18px;
+
+font-size:16px;
+
+font-weight:bold;
+
+cursor:pointer;
+
+margin:6px 3px;
+
+}
+
+.via-btn{
+
+background:#6c5ce7;
+
+color:white;
+
+width:100%;
+
+}
+
+.crear{
+
+background:#00c896;
+
+color:white;
+
+width:100%;
+
+font-size:18px;
+
+}
+
+button:disabled{
+
+opacity:.6;
+
+cursor:not-allowed;
+
+}
+
+textarea{
+
+width:100%;
+
+min-height:140px;
+
+resize:vertical;
+
+padding:15px;
+
+border-radius:12px;
+
+border:1px solid #353548;
+
+background:#0f0f18;
+
+color:white;
+
+font-size:16px;
+
+outline:none;
+
+}
+
+textarea:focus{
+
+border-color:#6c5ce7;
+
+}
+
+.estado{
+
+text-align:center;
+
+color:#aaa;
+
+min-height:24px;
+
+margin-top:10px;
+
+}
+
+.via-mensaje{
+
+background:#20202d;
+
+padding:15px;
+
+border-radius:12px;
+
+margin-top:15px;
+
+text-align:left;
+
+}
+
+.escena{
+
+background:#20202d;
+
+border-left:4px solid #6c5ce7;
+
+padding:15px;
+
+border-radius:10px;
+
+margin:12px 0;
+
+}
+
+.escena strong{
+
+display:block;
+
+margin-bottom:7px;
+
+}
+
+.exito{
+
+border-left:4px solid #00c896;
+
+}
+
+.error{
+
+border-left:4px solid #ff4d6d;
+
+}
+
+#resultado{
+
+display:none;
+
+}
+
+#storyboard{
+
+display:none;
+
+}
+
+#generando{
+
+display:none;
+
+text-align:center;
+
+}
+
+.spinner{
+
+font-size:45px;
+
+animation:girar 1.2s linear infinite;
+
+}
+
+@keyframes girar{
+
+from{
+transform:rotate(0deg);
+}
+
+to{
+transform:rotate(360deg);
+}
+
+}
+
+#videoResultado{
+
+display:none;
+
+}
+
+video{
+
+width:100%;
+
+border-radius:15px;
+
+margin-top:15px;
+
+}
+
+.volver{
+
+background:#29293a;
+
+color:white;
+
+width:100%;
+
+}
+
+@media(max-width:600px){
+
+.app{
+
+padding:14px;
+
+}
+
+h1{
+
+font-size:27px;
+
+}
+
+.card{
+
+padding:16px;
+
+}
+
+button{
+
+font-size:15px;
+
+}
+
+}
+
+</style>
+
+</head>
+
+
+<body>
+
+
+<div class="app">
+
+
+<h1>
+🎬 VIORA AI
+</h1>
+
+
+<p class="subtitulo">
+Convierte tus ideas en vídeos
+</p>
+
+
+<!-- ==============================
+     VIA
+============================== -->
+
+<div class="card via-card">
+
+
+<div class="via-avatar">
+🤖
+</div>
+
+
+<h2>
+VIA
+</h2>
+
+
+<p>
+Tu directora creativa con inteligencia artificial
+</p>
+
+
+<button
+type="button"
+class="via-btn"
+id="botonVoz">
+
+🎙️ Hablar con VIA
+
+</button>
+
+
+<div
+id="estadoVoz"
+class="estado">
+</div>
+
+
+<div
+id="mensajeVIA"
+class="via-mensaje">
+
+Hola 👋 Soy VIA.
+
+Cuéntame qué video quieres crear.
+
+</div>
+
+
+</div>
+
+
+
+<!-- ==============================
+     IDEA
+============================== -->
+
+<div class="card">
+
+
+<h2>
+💡 Cuéntale tu idea a VIA
+</h2>
+
+
+<p>
+Escribe qué quieres que aparezca en tu video.
+</p>
+
+
+<textarea
+id="prompt"
+placeholder="Ejemplo: Un carro deportivo negro recorriendo una ciudad futurista de noche, luces de neón, estilo cinematográfico."
+></textarea>
+
+
+<button
+type="button"
+class="crear"
+id="botonCrear">
+
+🚀 Generar Video
+
+</button>
+
+
+</div>
+
+
+
+<!-- ==============================
+     PROCESANDO
+============================== -->
+
+<div
+class="card"
+id="generando">
+
+
+<div class="spinner">
+🎬
+</div>
+
+
+<h2>
+VIA está creando tu video
+</h2>
+
+
+<p
+id="mensajeProceso">
+
+Preparando tu idea...
+
+</p>
+
+
+<div
+class="estado">
+
+⏳ Esto puede tardar algunos momentos.
+
+</div>
+
+
+</div>
+
+
+
+<!-- ==============================
+     STORYBOARD
+============================== -->
+
+<div
+class="card"
+id="storyboard">
+
+
+<h2>
+🎬 Storyboard de VIORA AI
+</h2>
+
+
+<div
+id="contenidoStoryboard">
+</div>
+
+
+</div>
+
+
+
+<!-- ==============================
+     VIDEO
+============================== -->
+
+<div
+class="card"
+id="videoResultado">
+
+
+<h2>
+🎉 ¡Tu video está listo!
+</h2>
+
+
+<div
+class="via-mensaje">
+
+🤖 <strong>VIA:</strong>
+
+<p>
+¡Listo! He terminado tu video.
+</p>
+
+</div>
+
+
+<video
+id="videoPlayer"
+controls
+playsinline>
+
+</video>
+
+
+<a
+id="abrirVideo"
+target="_blank"
+rel="noopener noreferrer"
+class="crear"
+style="
+display:block;
+text-align:center;
+text-decoration:none;
+margin-top:15px;
+padding:15px;
+border-radius:12px;
+">
+
+🎬 Abrir video
+
+</a>
+
+
+</div>
+
+
+
+<!-- ==============================
+     RESULTADO
+============================== -->
+
+<div
+id="resultado"
+class="card">
+
+
+<h2>
+📋 Plan de tu video
+</h2>
+
+
+<div class="escena">
+
+<strong>
+🎬 Escena 1 — Introducción
+</strong>
+
+<p>
+Presentación cinematográfica de la idea.
+</p>
+
+</div>
+
+
+<div class="escena">
+
+<strong>
+🔥 Escena 2 — Desarrollo
+</strong>
+
+<p>
+La acción principal ocurre.
+</p>
+
+</div>
+
+
+<div class="escena">
+
+<strong>
+✨ Escena 3 — Momento clave
+</strong>
+
+<p>
+El momento visual más importante.
+</p>
+
+</div>
+
+
+<div class="escena">
+
+<strong>
+🎞️ Escena 4 — Final
+</strong>
+
+<p>
+Cierre cinematográfico.
+</p>
+
+</div>
+
+
+</div>
+
+
+</div>
+
+
+
+<script>
+
+
+// =====================================
+// ⚙️ CONFIGURACIÓN
+// =====================================
+
+const API_URL =
+"https://viora-ai-5n6m.onrender.com";
+
+
+// =====================================
+// 🔗 ELEMENTOS
+// =====================================
+
+const promptInput =
+document.getElementById("prompt");
+
+const botonCrear =
+document.getElementById("botonCrear");
+
+const botonVoz =
+document.getElementById("botonVoz");
+
+const estadoVoz =
+document.getElementById("estadoVoz");
+
+const mensajeVIA =
+document.getElementById("mensajeVIA");
+
+const generando =
+document.getElementById("generando");
+
+const mensajeProceso =
+document.getElementById("mensajeProceso");
+
+const storyboard =
+document.getElementById("storyboard");
+
+const contenidoStoryboard =
+document.getElementById(
+"contenidoStoryboard"
+);
+
+const videoResultado =
+document.getElementById(
+"videoResultado"
+);
+
+const videoPlayer =
+document.getElementById(
+"videoPlayer"
+);
+
+const abrirVideo =
+document.getElementById(
+"abrirVideo"
+);
+
+
+// =====================================
+// 🎙️ VOZ
+// =====================================
+
+botonVoz.addEventListener(
+"click",
+function(){
+
+const SpeechRecognition =
+window.SpeechRecognition ||
+window.webkitSpeechRecognition;
+
+
+if(!SpeechRecognition){
+
+mensajeVIA.innerHTML =
+"⚠️ Tu navegador no permite reconocimiento de voz.";
+
+return;
+
+}
+
+
+const recognition =
+new SpeechRecognition();
+
+
+recognition.lang =
+"es-CO";
+
+
+recognition.continuous =
+false;
+
+
+recognition.interimResults =
+false;
+
+
+recognition.onstart =
+function(){
+
+estadoVoz.innerHTML =
+"🎙️ Escuchando...";
+
+
+mensajeVIA.innerHTML =
+"👂 Te estoy escuchando.";
+
+};
+
+
+recognition.onresult =
+function(event){
+
+const texto =
+event.results[0][0].transcript;
+
+
+promptInput.value =
+texto;
+
+
+estadoVoz.innerHTML =
+"✅ Idea recibida";
+
+
+mensajeVIA.innerHTML =
+"✨ Perfecto. Ya entendí tu idea.";
+
+};
+
+
+recognition.onerror =
+function(){
+
+estadoVoz.innerHTML =
+"⚠️ No pude escuchar correctamente.";
+
+};
+
+
+recognition.onend =
+function(){
+
+setTimeout(
+function(){
+
+estadoVoz.innerHTML =
+"";
+
+},
+2000
+);
+
+};
+
+
+recognition.start();
+
+});
+
+
+// =====================================
+// 🚀 GENERAR VIDEO
+// =====================================
+
+botonCrear.addEventListener(
+"click",
+generarVideo
+);
+
+
+async function generarVideo(){
+
+const prompt =
+promptInput.value.trim();
+
+
+if(!prompt){
+
+alert(
+"Primero escribe una idea para tu video."
+);
+
+promptInput.focus();
+
+return;
+
+}
+
+
+// Desactivar botón
+
+botonCrear.disabled =
+true;
+
+
+botonCrear.innerText =
+"⏳ Creando video...";
+
+
+// Mostrar procesamiento
+
+generando.style.display =
+"block";
+
+
+storyboard.style.display =
+"block";
+
+
+videoResultado.style.display =
+"none";
+
+
+contenidoStoryboard.innerHTML = `
+
+<div class="via-mensaje">
+
+🤖 <strong>VIA:</strong>
+
+<p>
+He recibido tu idea.
+</p>
+
+<p>
+Estoy enviándola a VIORA AI y Runway.
+</p>
+
+</div>
+
+`;
+
+
+mensajeProceso.innerText =
+"🎬 Enviando solicitud a Runway...";
+
+
+try{
+
+
+// =====================================
+// 📡 ENVIAR A BACKEND
+// =====================================
+
+const respuesta =
+await fetch(
+API_URL +
+"/api/generar-video",
+{
+
+method:"POST",
+
+headers:{
+"Content-Type":
+"application/json"
+},
+
+body:JSON.stringify({
+
+prompt:prompt
+
+})
+
+}
+);
+
+
+const datos =
+await respuesta.json();
+
+
+if(
+!respuesta.ok ||
+!datos.ok
+){
+
+throw new Error(
+datos.error ||
+"No se pudo iniciar la generación."
+);
+
+}
+
+
+console.log(
+"🆔 Tarea:",
+datos.taskId
+);
+
+
+contenidoStoryboard.innerHTML = `
+
+<div class="via-mensaje">
+
+🤖 <strong>VIA:</strong>
+
+<p>
+¡Perfecto! Runway recibió tu idea.
+</p>
+
+<p>
+🎥 Estoy creando tu video...
+</p>
+
+</div>
+
+`;
+
+
+mensajeProceso.innerText =
+"🎥 Runway está generando tu video...";
+
+
+// =====================================
+// 🔎 CONSULTAR ESTADO
+// =====================================
+
+consultarVideo(
+datos.taskId
+);
+
+
+}catch(error){
+
+
+console.error(
+error
+);
+
+
+mostrarError(
+error.message
+);
+
+
+botonCrear.disabled =
+false;
+
+
+botonCrear.innerText =
+"🚀 Generar Video";
+
+}
+
+}
+
+
+// =====================================
+// 🔎 CONSULTAR VIDEO
+// =====================================
+
+async function consultarVideo(
+taskId
+){
+
+try{
+
+
+const respuesta =
+await fetch(
+
+API_URL +
+"/api/video/" +
+encodeURIComponent(
+taskId
+)
+
+);
+
+
+const datos =
+await respuesta.json();
+
+
+if(
+!respuesta.ok ||
+!datos.ok
+){
+
+throw new Error(
+datos.error ||
+"Error consultando Runway."
+);
+
+}
+
+
+const task =
+datos.task;
+
+
+console.log(
+"Estado:",
+task.status
+);
+
+
+// =====================================
+// 🎉 TERMINADO
+// =====================================
+
+if(
+task.status ===
+"SUCCEEDED"
+){
+
+
+const videoURL =
+task.output &&
+task.output[0];
+
+
+if(!videoURL){
+
+throw new Error(
+"El video terminó pero no se recibió la URL."
+);
+
+}
+
+
+mostrarVideo(
+videoURL
+);
+
+
+return;
+
+}
+
+
+// =====================================
+// ❌ ERROR
+// =====================================
+
+if(
+task.status ===
+"FAILED" ||
+task.status ===
+"CANCELED"
+){
+
+throw new Error(
+"Runway no pudo completar el video."
+);
+
+}
+
+
+// =====================================
+// ⏳ CONTINUAR
+// =====================================
+
+mensajeProceso.innerText =
+"🎥 El video todavía se está generando...";
+
+
+setTimeout(
+function(){
+
+consultarVideo(
+taskId
+);
+
+},
+6000
+);
+
+
+}catch(error){
+
+
+console.error(
+error
+);
+
+
+mostrarError(
+error.message
+);
+
+}
+
+}
+
+
+// =====================================
+// 🎥 MOSTRAR VIDEO
+// =====================================
+
+function mostrarVideo(
+videoURL
+){
+
+generando.style.display =
+"none";
+
+
+storyboard.style.display =
+"none";
+
+
+videoResultado.style.display =
+"block";
+
+
+videoPlayer.src =
+videoURL;
+
+
+abrirVideo.href =
+videoURL;
+
+
+mensajeVIA.innerHTML =
+
+"🎉 ¡Video terminado! Ya puedes verlo.";
+
+
+botonCrear.disabled =
+false;
+
+
+botonCrear.innerText =
+"🚀 Generar Otro Video";
+
+
+videoResultado.scrollIntoView({
+
+behavior:"smooth"
+
+});
+
+}
+
+
+// =====================================
+// ❌ ERROR
+// =====================================
+
+function mostrarError(
+mensaje
+){
+
+generando.style.display =
+"none";
+
+
+storyboard.style.display =
+"block";
+
+
+contenidoStoryboard.innerHTML = `
+
+<div class="error">
+
+<h3>
+❌ No se pudo crear el video
+</h3>
+
+<p>
+${escaparHTML(
+mensaje
+)}
+</p>
+
+</div>
+
+`;
+
+
+botonCrear.disabled =
+false;
+
+
+botonCrear.innerText =
+"🚀 Intentar nuevamente";
+
+}
+
+
+// =====================================
+// 🛡️ SEGURIDAD
+// =====================================
+
+function escaparHTML(
+texto
+){
+
+return String(texto)
+
+.replace(
+/&/g,
+"&amp;"
+)
+
+.replace(
+/</g,
+"&lt;"
+)
+
+.replace(
+/>/g,
+"&gt;"
+)
+
+.replace(
+/"/g,
+"&quot;"
+)
+
+.replace(
+/'/g,
+"&#039;"
+);
+
+}
+
+
+</script>
+
+
+</body>
+
+</html>
